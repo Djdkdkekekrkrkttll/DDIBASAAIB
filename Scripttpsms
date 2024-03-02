@@ -1,0 +1,30 @@
+local entity_get_local_player = entity.get_local_player
+local entity_get_prop = entity.get_prop
+local entity_set_prop = entity.set_prop
+local globals_tickinterval = globals.tickinterval
+local math_sqrt = math.sqrt
+
+local function ticks_to_time(ticks)
+    return globals_tickinterval() * ticks
+end
+
+local function reach_legs()
+    local local_player = entity_get_local_player()
+    if local_player == nil then
+        return
+    end
+
+    local velocity_prop_local = { x = entity_get_prop(local_player, "m_vecVelocity[0]") or 0, y = entity_get_prop(local_player, "m_vecVelocity[1]") or 0, z = entity_get_prop(local_player, "m_vecVelocity[2]") or 0 }
+    local velocity_local = math_sqrt(velocity_prop_local.x * velocity_prop_local.x + velocity_prop_local.y * velocity_prop_local.y)
+
+    -- Defina sua lógica de alcance aqui para as pernas
+
+    -- Por exemplo, ajuste a velocidade da perna para 15 unidades por segundo
+    local new_velocity = { x = velocity_prop_local.x * 15, y = velocity_prop_local.y * 15, z = velocity_prop_local.z }
+    entity_set_prop(local_player, "m_vecVelocity[0]", new_velocity.x)
+    entity_set_prop(local_player, "m_vecVelocity[1]", new_velocity.y)
+end
+
+client.set_event_callback("setup_command", function(cmd)
+    reach_legs()
+end)
