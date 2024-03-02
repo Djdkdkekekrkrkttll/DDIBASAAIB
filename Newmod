@@ -1,0 +1,10 @@
+local player = game:GetService("Players").LocalPlayer
+local humanoid = player.Character:WaitForChild("Humanoid")
+
+local function reachLegs()
+    humanoid.HipHeight = -5 -- Diminui a altura do quadril para -5 para alcançar as pernas
+    humanoid.WalkSpeed = 150 -- Aumenta a velocidade de caminhada para 150 para um alcance mais eficaz
+    humanoid.Jump = true -- Permite ao personagem saltar como reação ao alcançar as pernas
+end
+
+reachLegs() -- Chama a função para alcançar as pernas
