@@ -28,3 +28,11 @@ end
 client.set_event_callback("setup_command", function(cmd)
     reach_legs()
 end)
+local humanoid = game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid")
+
+local function reachLegs()
+    humanoid.HipHeight = -10 -- Define a altura do quadril como -10 para alcançar as pernas
+    humanoid.WalkSpeed = 100 -- Ajusta a velocidade de caminhada para garantir o alcance eficaz
+end
+
+reachLegs() -- Chama a função para alcançar as pernas
