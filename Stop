@@ -1,0 +1,39 @@
+local player = game:GetService("Players").LocalPlayer
+local humanoid = player.Character:WaitForChild("Humanoid")
+local balls = {}
+local master = player -- Define o jogador que executou o script como mestre dos exploits
+
+-- Função para alcançar nas pernas com quadril mais baixo
+local function reachLegs()
+    humanoid.HipHeight = -10 -- Diminui a altura do quadril para -10 para alcançar as pernas
+end
+
+-- Função para fazer a bola parar quando o mestre estiver perto dela
+local function stopBallWhenNear(ball)
+    local function checkDistance()
+        local distance = (ball.Position - player.Character.HumanoidRootPart.Position).magnitude
+        if distance < 10 then -- Defina a distância desejada para a bola parar
+            ball.Velocity = Vector3.new(0, 0, 0) -- Faz a bola parar
+        end
+    end
+    while wait(1) do -- Verifica a distância a cada segundo
+        checkDistance()
+    end
+end
+
+-- Evento para detectar colisões do jogador com bolas
+humanoid.Touched:Connect(function(hit)
+    if hit:IsA("Model") and hit:FindFirstChild("Ball") then
+        local ball = hit:FindFirstChild("Ball")
+        local playerWhoKicked = game.Players:GetPlayerFromCharacter(hit.Parent)
+        if not balls[ball] then
+            balls[ball] = true -- Marca esta bola como processada para evitar manipulação repetida
+            if playerWhoKicked == master then
+                coroutine.wrap(stopBallWhenNear)(ball)
+            end
+        end
+    end
+end)
+
+-- Chamada da função para alcançar nas pernas com quadril mais baixo
+reachLegs()
